@@ -42,28 +42,28 @@ The w18_and_w48_experiments.sh file contains commands to train each of the setti
 To run the Early Exits (EE) setting: use
 
 ````bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port '26001' tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output_new/w48/RH/    MODEL.NAME model_anytime   MODEL.EXTRA.EE_WEIGHTS '(1,1,1,1)' EXIT.TYPE 'downup_pool_1x1_inter_flexible' EXIT.FIX_INTER_CHANNEL True  EXIT.INTER_CHANNEL 64 TRAIN.END_EPOCH 484 MASK.FULL_USE True    WORKERS 4
+python -m torch.distributed.launch --nproc_per_node=4 tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output_new/w48/RH/    MODEL.NAME model_anytime  EXIT.FIX_INTER_CHANNEL True  EXIT.INTER_CHANNEL 64 TRAIN.END_EPOCH 484 
 ````
 
 
 To run the Redesigned Heads (RH) setting: use 
 
 ````bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port '26001' tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output_new/w48/RH/    MODEL.NAME model_anytime   MODEL.EXTRA.EE_WEIGHTS '(1,1,1,1)' EXIT.TYPE 'downup_pool_1x1_inter_flexible' EXIT.FIX_INTER_CHANNEL True  EXIT.INTER_CHANNEL 64 TRAIN.END_EPOCH 484 MASK.FULL_USE True    WORKERS 4
+python -m torch.distributed.launch --nproc_per_node=4 tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output/w48/RH/    MODEL.NAME model_anytime   EXIT.TYPE 'downup_pool_1x1_inter_flexible' EXIT.FIX_INTER_CHANNEL True  EXIT.INTER_CHANNEL 64 TRAIN.END_EPOCH 484  
 ````
 
 
 To run Confidence Adatative (CA) setting: use
 
 ````bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port '26001' tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output_new/w48/CA/0.998    MODEL.NAME model_anytime   MODEL.EXTRA.EE_WEIGHTS '(1,1,1,1)'  TRAIN.END_EPOCH 484 MASK.FULL_USE True   MASK.CONF_THRE 0.998   WORKERS 4`
+python -m torch.distributed.launch --nproc_per_node=4 tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output/w48/CA/0.998    MODEL.NAME model_anytime   TRAIN.END_EPOCH 484 MASK.FULL_USE True   MASK.CONF_THRE 0.998
 ````
 
 
 To run EE + RH + CA: use
 
 ````bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port '26001' tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output_new/w48/FULL    MODEL.NAME model_anytime   MODEL.EXTRA.EE_WEIGHTS '(1,1,1,1)'  TRAIN.END_EPOCH 484 EXIT.TYPE 'downup_pool_1x1_inter_flexible' EXIT.FIX_INTER_CHANNEL True  EXIT.INTER_CHANNEL 64 MASK.FULL_USE True   MASK.CONF_THRE 0.998
+python -m torch.distributed.launch --nproc_per_node=4 tools/train_ee.py --cfg experiments/cityscapes/w48.yaml OUTPUT_DIR output_new/w48/FULL    MODEL.NAME model_anytime  TRAIN.END_EPOCH 484 EXIT.TYPE 'downup_pool_1x1_inter_flexible' EXIT.FIX_INTER_CHANNEL True  EXIT.INTER_CHANNEL 64 MASK.FULL_USE True   MASK.CONF_THRE 0.998
 ````
 
 After the training finishes, the test result will be stored in the directory specified by the argument `OUTPUT_DIR` in the YAML configuration file. Inside it, you will find:
